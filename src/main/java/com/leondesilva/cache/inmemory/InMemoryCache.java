@@ -3,11 +3,25 @@ package com.leondesilva.cache.inmemory;
 import com.leondesilva.cache.inmemory.pojo.MetaData;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class to represent the in memory cache.
+ *
+ * @param <K> the type of the key
+ * @param <V> the type of the value
+ */
 public class InMemoryCache<K extends Serializable, V extends Serializable> implements Cache<K, V> {
     private Map<K, V> cacheMap;
     private MetaData metaData;
+
+    /**
+     * Constructor to instantiate in memory cache.
+     */
+    public InMemoryCache() {
+        this.cacheMap = new HashMap<>();
+    }
 
     /**
      * Method to put the key and value to the cache.
