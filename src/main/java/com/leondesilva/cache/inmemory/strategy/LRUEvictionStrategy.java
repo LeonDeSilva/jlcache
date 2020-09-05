@@ -1,6 +1,7 @@
 package com.leondesilva.cache.inmemory.strategy;
 
 import com.leondesilva.cache.inmemory.Cache;
+import com.leondesilva.cache.inmemory.exceptions.CacheException;
 import com.leondesilva.cache.inmemory.pojo.LRUEvictionMetaData;
 
 import java.io.Serializable;
@@ -21,8 +22,9 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      *
      * @param cache        the cache
      * @param maxEntrySize the max entry size
+     * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    public LRUEvictionStrategy(Cache<K, V> cache, int maxEntrySize) {
+    public LRUEvictionStrategy(Cache<K, V> cache, int maxEntrySize) throws CacheException {
         this.cache = cache;
         this.maxEntrySize = maxEntrySize;
 
@@ -37,7 +39,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      * @param value the value
      */
     @Override
-    public void put(K key, V value) {
+    public void put(K key, V value) throws CacheException {
         LRUEvictionMetaData<K> metaData = retrieveMetaData();
         LinkedList<K> nodeList = metaData.getNodeList();
         if (nodeList.size() == maxEntrySize) {
@@ -62,7 +64,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      * @return the value
      */
     @Override
-    public V get(K key) {
+    public V get(K key) throws CacheException {
         LRUEvictionMetaData<K> metaData = retrieveMetaData();
         if (cache.containsKey(key)) {
             metaData.getNodeList().remove(key);
@@ -78,7 +80,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      * @param key the key to delete
      */
     @Override
-    public void delete(K key) {
+    public void delete(K key) throws CacheException {
         cache.delete(key);
 
         LRUEvictionMetaData<K> metaData = retrieveMetaData();
@@ -91,7 +93,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      *
      */
     @Override
-    public void deleteAll() {
+    public void deleteAll() throws CacheException {
         LRUEvictionMetaData<K> metaData = retrieveMetaData();
         cache.deleteAll();
         metaData.getNodeList().clear();
@@ -105,7 +107,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      * @return true of contains and false if not
      */
     @Override
-    public boolean containsKey(K key) {
+    public boolean containsKey(K key) throws CacheException {
         return cache.containsKey(key);
     }
 
@@ -115,7 +117,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      * @return the size of the cache
      */
     @Override
-    public int getSize() {
+    public int getSize() throws CacheException {
         return cache.getSize();
     }
 
@@ -124,7 +126,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      *
      * @param metaData the meta data to be stored
      */
-    private void storeMetaData(LRUEvictionMetaData<K> metaData) {
+    private void storeMetaData(LRUEvictionMetaData<K> metaData) throws CacheException {
         this.cache.storeMetaData(metaData);
     }
 
@@ -133,7 +135,7 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
      *
      * @return the meta data
      */
-    private LRUEvictionMetaData<K> retrieveMetaData() {
+    private LRUEvictionMetaData<K> retrieveMetaData() throws CacheException {
         return (LRUEvictionMetaData) this.cache.getMetaData();
     }
 }

@@ -1,33 +1,30 @@
 package com.leondesilva.cache.inmemory;
 
-import com.leondesilva.cache.inmemory.enumeration.CacheEvictionType;
 import com.leondesilva.cache.inmemory.exceptions.CacheException;
 import com.leondesilva.cache.inmemory.pojo.MetaData;
-import com.leondesilva.cache.inmemory.strategy.EvictionStrategy;
-import com.leondesilva.cache.inmemory.strategy.EvictionStrategyFactory;
 
 import java.io.Serializable;
 
 /**
- * Class to represent the implementation of the evictable cache.
+ * Class to represent the two level cache.
  *
  * @param <K> the type of the key
  * @param <V> the type of the value
  */
-public class EvictableCache<K extends Serializable, V extends Serializable> implements Cache<K, V> {
-    private EvictionStrategy<K, V> cacheEvictionStrategy;
+public class TwoLevelCache<K extends Serializable, V extends Serializable> implements Cache<K, V> {
+    private Cache<K, V> level1Cache;
+    private Cache<K, V> level2Cache;
     private MetaData metaData;
 
     /**
-     * Constructor to instantiate the evictable cache.
+     * Constructor to instantiate the two level cache.
      *
-     * @param cache             the cache to be used with the eviction strategy
-     * @param maxEntrySize      the max entry size
-     * @param cacheEvictionType the cache eviction type
-     * @throws CacheException   if the eviction type is invalid or if the cache initialization fails
+     * @param level1Cache the level 1 cache
+     * @param level2Cache the level 2 cache
      */
-    public EvictableCache(Cache<K, V> cache, int maxEntrySize, CacheEvictionType cacheEvictionType) throws CacheException {
-        this.cacheEvictionStrategy = EvictionStrategyFactory.create(cache, maxEntrySize, cacheEvictionType);
+    public TwoLevelCache(Cache<K, V> level1Cache, Cache<K, V> level2Cache) {
+        this.level1Cache = level1Cache;
+        this.level2Cache = level2Cache;
     }
 
     /**
@@ -37,8 +34,10 @@ public class EvictableCache<K extends Serializable, V extends Serializable> impl
      * @param value the value
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
+    @Override
     public void put(K key, V value) throws CacheException {
-        cacheEvictionStrategy.put(key, value);
+        level1Cache.put(key, value);
+        level2Cache.put(key, value);
     }
 
     /**
@@ -48,8 +47,17 @@ public class EvictableCache<K extends Serializable, V extends Serializable> impl
      * @return the value for the given key
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
+    @Override
     public V get(K key) throws CacheException {
-        return cacheEvictionStrategy.get(key);
+        if (level1Cache.containsKey(key)) {
+            return level1Cache.get(key);
+        }
+
+        if (level2Cache.containsKey(key)) {
+            return level2Cache.get(key);
+        }
+
+        return null;
     }
 
     /**
@@ -58,8 +66,10 @@ public class EvictableCache<K extends Serializable, V extends Serializable> impl
      * @param key the key to be deleted
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
+    @Override
     public void delete(K key) throws CacheException {
-        cacheEvictionStrategy.delete(key);
+        level1Cache.delete(key);
+        level2Cache.delete(key);
     }
 
     /**
@@ -67,8 +77,10 @@ public class EvictableCache<K extends Serializable, V extends Serializable> impl
      *
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
+    @Override
     public void deleteAll() throws CacheException {
-        cacheEvictionStrategy.deleteAll();
+        level1Cache.deleteAll();
+        level2Cache.deleteAll();
     }
 
     /**
@@ -78,8 +90,13 @@ public class EvictableCache<K extends Serializable, V extends Serializable> impl
      * @return true if contains and false if not
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
+    @Override
     public boolean containsKey(K key) throws CacheException {
-        return cacheEvictionStrategy.containsKey(key);
+        if (level1Cache.containsKey(key)) {
+            return true;
+        }
+
+        return level2Cache.containsKey(key);
     }
 
     /**
@@ -88,8 +105,9 @@ public class EvictableCache<K extends Serializable, V extends Serializable> impl
      * @return the cache size
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
+    @Override
     public int getSize() throws CacheException {
-        return cacheEvictionStrategy.getSize();
+        return level1Cache.getSize() + level2Cache.getSize();
     }
 
     /**

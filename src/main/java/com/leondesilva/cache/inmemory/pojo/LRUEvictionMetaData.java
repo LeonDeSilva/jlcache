@@ -18,13 +18,4 @@ public class LRUEvictionMetaData<K> implements MetaData {
     public LinkedList<K> getNodeList() {
         return nodeList;
     }
-
-    /**
-     * Method to set the node list.
-     *
-     * @param nodeList the node list
-     */
-    public void setNodeList(LinkedList<K> nodeList) {
-        this.nodeList = nodeList;
-    }
 }

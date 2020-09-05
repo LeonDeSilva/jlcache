@@ -1,5 +1,7 @@
 package com.leondesilva.cache.inmemory.strategy;
 
+import com.leondesilva.cache.inmemory.exceptions.CacheException;
+
 import java.io.Serializable;
 
 /**
@@ -14,42 +16,48 @@ public interface EvictionStrategy<K extends Serializable, V extends Serializable
      *
      * @param key   the key
      * @param value the value
+     * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    void put(K key, V value);
+    void put(K key, V value) throws CacheException;
 
     /**
      * Method to get the value for a given key.
      *
      * @param key the key
      * @return the value
+     * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    V get(K key);
+    V get(K key) throws CacheException;
 
     /**
      * Method to delete an entry for a given key.
      *
      * @param key the key to delete
+     * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    void delete(K key);
+    void delete(K key) throws CacheException;
 
     /**
      * Method to delete all the keys.
      *
+     * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    void deleteAll();
+    void deleteAll() throws CacheException;
 
     /**
      * Method to check whether the key contains in cache
      *
      * @param key the key
      * @return true of contains and false if not
+     * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    boolean containsKey(K key);
+    boolean containsKey(K key) throws CacheException;
 
     /**
      * Method to get the size of the cache.
      *
      * @return the size of the cache
+     * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    int getSize();
+    int getSize() throws CacheException;
 }
