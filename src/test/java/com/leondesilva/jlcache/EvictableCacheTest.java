@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 /**
  * Class to test evictable cache.
  */
-public class EvictableCacheTest {
+class EvictableCacheTest {
     private EvictableCache<String, String> evictableCache;
     private Cache<String, String> cache;
     private EvictionStrategy<String, String> strategy;
@@ -26,7 +26,7 @@ public class EvictableCacheTest {
      *
      */
     @BeforeEach
-    public void setup() throws CacheException {
+    void setup() throws CacheException {
         cache = mock(Cache.class);
         strategy = mock(EvictionStrategy.class);
         evictableCache = new EvictableCache<>(cache, 10, CacheEvictionType.LFU);
@@ -39,7 +39,7 @@ public class EvictableCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_the_strategy_when_evictable_cache_put_is_called() throws CacheException {
+    void should_call_the_strategy_when_evictable_cache_put_is_called() throws CacheException {
         evictableCache.put("A", "B");
         verify(strategy, times(1)).put("A", "B");
     }
@@ -50,7 +50,7 @@ public class EvictableCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_the_strategy_when_evictable_cache_get_is_called() throws CacheException {
+    void should_call_the_strategy_when_evictable_cache_get_is_called() throws CacheException {
         evictableCache.get("A");
         verify(strategy, times(1)).get("A");
     }
@@ -61,7 +61,7 @@ public class EvictableCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_the_strategy_when_evictable_cache_contains_is_called() throws CacheException {
+    void should_call_the_strategy_when_evictable_cache_contains_is_called() throws CacheException {
         evictableCache.containsKey("A");
         verify(strategy, times(1)).containsKey("A");
     }
@@ -72,7 +72,7 @@ public class EvictableCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_the_strategy_when_evictable_cache_get_size_is_called() throws CacheException {
+    void should_call_the_strategy_when_evictable_cache_get_size_is_called() throws CacheException {
         evictableCache.getSize();
         verify(strategy, times(1)).getSize();
     }
@@ -83,7 +83,7 @@ public class EvictableCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_the_strategy_when_evictable_cache_delete_is_called() throws CacheException {
+    void should_call_the_strategy_when_evictable_cache_delete_is_called() throws CacheException {
         evictableCache.delete("A");
         verify(strategy, times(1)).delete("A");
     }
@@ -94,7 +94,7 @@ public class EvictableCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_the_strategy_when_evictable_cache_delete_all_is_called() throws CacheException {
+    void should_call_the_strategy_when_evictable_cache_delete_all_is_called() throws CacheException {
         evictableCache.deleteAll();
         verify(strategy, times(1)).deleteAll();
     }
@@ -103,7 +103,7 @@ public class EvictableCacheTest {
      * Test to verify that meta is stored and retrieved correctly.
      */
     @Test
-    public void should_successfully_store_meta_data() {
+    void should_successfully_store_meta_data() {
         MetaData metaData = mock(MetaData.class);
         evictableCache.storeMetaData(metaData);
 

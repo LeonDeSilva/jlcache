@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 /**
  * Class to test the two level cache.
  */
-public class TwoLevelCacheTest {
+class TwoLevelCacheTest {
     private TwoLevelCache<String, String> twoLevelCache;
     private Cache<String, String> cache1;
     private Cache<String, String> cache2;
@@ -32,7 +32,7 @@ public class TwoLevelCacheTest {
      *
      */
     @BeforeEach
-    public void setup() throws CacheException {
+    void setup() throws CacheException {
         cache1 = mock(Cache.class);
         cache2 = mock(Cache.class);
 
@@ -61,7 +61,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_put_method_in_both_level1_and_level2_caches_when_put_method_is_called() throws CacheException {
+    void should_call_put_method_in_both_level1_and_level2_caches_when_put_method_is_called() throws CacheException {
         twoLevelCache.put(KEY1, VALUE1);
         verify(cache1, times(1)).put(KEY1, VALUE1);
         verify(cache2, times(1)).put(KEY1, VALUE1);
@@ -73,7 +73,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_return_value_from_the_level1_cache_when_level1_cache_has_the_key() throws CacheException {
+    void should_return_value_from_the_level1_cache_when_level1_cache_has_the_key() throws CacheException {
         String result = twoLevelCache.get(KEY1);
         verify(cache1, times(1)).get(KEY1);
         verifyZeroInteractions(cache2);
@@ -86,7 +86,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_return_value_from_the_level2_cache_when_level2_cache_has_the_key() throws CacheException {
+    void should_return_value_from_the_level2_cache_when_level2_cache_has_the_key() throws CacheException {
         String result = twoLevelCache.get(KEY3);
         verify(cache1, times(0)).get(KEY3);
         verify(cache2, times(1)).get(KEY3);
@@ -99,7 +99,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_return_null_when_both_level1_and_level2_caches_does_not_have_the_key() throws CacheException {
+    void should_return_null_when_both_level1_and_level2_caches_does_not_have_the_key() throws CacheException {
         String result = twoLevelCache.get(KEY_THAT_DOES_NOT_EXIST_IN_BOTH_CACHES);
         verify(cache1, times(0)).get(KEY_THAT_DOES_NOT_EXIST_IN_BOTH_CACHES);
         verify(cache2, times(0)).get(KEY_THAT_DOES_NOT_EXIST_IN_BOTH_CACHES);
@@ -112,7 +112,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_delete_method_in_both_level1_and_level2_caches_when_delete_method_is_called() throws CacheException {
+    void should_call_delete_method_in_both_level1_and_level2_caches_when_delete_method_is_called() throws CacheException {
         twoLevelCache.delete(KEY1);
         verify(cache1, times(1)).delete(KEY1);
         verify(cache1, times(1)).delete(KEY1);
@@ -124,7 +124,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_call_delete_all_method_in_both_level1_and_level2_caches_when_delete_all_method_is_called() throws CacheException {
+    void should_call_delete_all_method_in_both_level1_and_level2_caches_when_delete_all_method_is_called() throws CacheException {
         twoLevelCache.deleteAll();
         verify(cache1, times(1)).deleteAll();
         verify(cache1, times(1)).deleteAll();
@@ -136,7 +136,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_return_true_if_the_level1_cache_contains_the_key() throws CacheException {
+    void should_return_true_if_the_level1_cache_contains_the_key() throws CacheException {
         boolean result = twoLevelCache.containsKey(KEY2);
         verify(cache1, times(1)).containsKey(KEY2);
         verify(cache2, times(0)).containsKey(KEY2);
@@ -149,7 +149,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_return_true_if_the_level1_cache_does_not_and_level2_cache_contains_the_key() throws CacheException {
+    void should_return_true_if_the_level1_cache_does_not_and_level2_cache_contains_the_key() throws CacheException {
         boolean result = twoLevelCache.containsKey(KEY3);
         verify(cache1, times(1)).containsKey(KEY3);
         verify(cache2, times(1)).containsKey(KEY3);
@@ -162,7 +162,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_return_false_if_the_both_caches_does_not_contain_the_key() throws CacheException {
+    void should_return_false_if_the_both_caches_does_not_contain_the_key() throws CacheException {
         boolean result = twoLevelCache.containsKey(KEY_THAT_DOES_NOT_EXIST_IN_BOTH_CACHES);
         verify(cache1, times(1)).containsKey(KEY_THAT_DOES_NOT_EXIST_IN_BOTH_CACHES);
         verify(cache2, times(1)).containsKey(KEY_THAT_DOES_NOT_EXIST_IN_BOTH_CACHES);
@@ -175,7 +175,7 @@ public class TwoLevelCacheTest {
      * @throws CacheException if an error occurs when dealing with the cache
      */
     @Test
-    public void should_return_the_total_of_the_level1_and_level2_cache_sizes() throws CacheException {
+    void should_return_the_total_of_the_level1_and_level2_cache_sizes() throws CacheException {
         assertThat(twoLevelCache.getSize(), is(equalTo(5)));
     }
 
@@ -183,11 +183,10 @@ public class TwoLevelCacheTest {
      * Test to verify that meta is stored and retrieved correctly.
      */
     @Test
-    public void should_successfully_store_meta_data() {
+    void should_successfully_store_meta_data() {
         MetaData metaData = mock(MetaData.class);
         twoLevelCache.storeMetaData(metaData);
 
         assertThat(twoLevelCache.getMetaData(), is(equalTo(metaData)));
     }
-
 }

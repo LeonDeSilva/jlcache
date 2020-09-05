@@ -16,7 +16,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * Class to test LRU eviction strategy.
  */
-public class LRUEvictionStrategyTest {
+class LRUEvictionStrategyTest {
     private LRUEvictionStrategy<String ,String> strategy;
     private InMemoryCache<String, String> cache;
     private static final String KEY1 = "Key1";
@@ -40,7 +40,7 @@ public class LRUEvictionStrategyTest {
      *
      */
     @BeforeEach
-    public void setup() throws CacheException {
+    void setup() throws CacheException {
         cache = new InMemoryCache<>();
         strategy = new LRUEvictionStrategy<>(cache, 5);
     }
@@ -51,7 +51,7 @@ public class LRUEvictionStrategyTest {
      * @throws CacheException if an error occurs when trying to cache
      */
     @Test
-    public void should_insert_the_data_when_insertion_count_is_equal_to_max_size() throws CacheException {
+    void should_insert_the_data_when_insertion_count_is_equal_to_max_size() throws CacheException {
         strategy.put(KEY1, VALUE1);
         strategy.put(KEY2, VALUE2);
         strategy.put(KEY3, VALUE3);
@@ -95,7 +95,7 @@ public class LRUEvictionStrategyTest {
      * @throws CacheException if an error occurs when trying to cache
      */
     @Test
-    public void should_insert_the_data_and_maintain_max_entry_count_even_extra_insertions_happen() throws CacheException {
+    void should_insert_the_data_and_maintain_max_entry_count_even_extra_insertions_happen() throws CacheException {
         strategy.put(KEY1, VALUE1);
         strategy.put(KEY2, VALUE2);
         strategy.put(KEY3, VALUE3);
@@ -144,7 +144,7 @@ public class LRUEvictionStrategyTest {
      * @throws CacheException if an error occurs when trying to cache
      */
     @Test
-    public void should_bring_the_updated_key_to_the_front_of_the_LRU_node_list() throws CacheException {
+    void should_bring_the_updated_key_to_the_front_of_the_LRU_node_list() throws CacheException {
         strategy.put(KEY1, VALUE1);
         strategy.put(KEY2, VALUE2);
         strategy.put(KEY3, VALUE3);
@@ -191,7 +191,7 @@ public class LRUEvictionStrategyTest {
      * @throws CacheException if an error occurs when trying to cache
      */
     @Test
-    public void should_bring_the_key_that_was_retrieved_to_the_front_of_the_LRU_node_list() throws CacheException {
+    void should_bring_the_key_that_was_retrieved_to_the_front_of_the_LRU_node_list() throws CacheException {
         strategy.put(KEY1, VALUE1);
         strategy.put(KEY2, VALUE2);
         strategy.put(KEY3, VALUE3);
@@ -238,7 +238,7 @@ public class LRUEvictionStrategyTest {
      * @throws CacheException if an error occurs when trying to cache
      */
     @Test
-    public void should_successfully_delete_key_from_cache_and_LRU_node_list() throws CacheException {
+    void should_successfully_delete_key_from_cache_and_LRU_node_list() throws CacheException {
         strategy.put(KEY1, VALUE1);
         strategy.put(KEY2, VALUE2);
         strategy.put(KEY3, VALUE3);
@@ -285,7 +285,7 @@ public class LRUEvictionStrategyTest {
      * @throws CacheException if an error occurs when trying to cache
      */
     @Test
-    public void should_successfully_clear_the_cache_and_LRU_node_list() throws CacheException {
+    void should_successfully_clear_the_cache_and_LRU_node_list() throws CacheException {
         strategy.put(KEY1, VALUE1);
         strategy.put(KEY2, VALUE2);
         strategy.put(KEY3, VALUE3);

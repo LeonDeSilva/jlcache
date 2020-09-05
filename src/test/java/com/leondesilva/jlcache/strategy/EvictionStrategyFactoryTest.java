@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 /**
  * Class to test EvictionStrategyFactory.
  */
-public class EvictionStrategyFactoryTest {
+class EvictionStrategyFactoryTest {
     private Cache<String, String> cache;
 
     /**
@@ -23,7 +23,7 @@ public class EvictionStrategyFactoryTest {
      *
      */
     @BeforeEach
-    public void setup() {
+    void setup() {
         cache = mock(Cache.class);
     }
 
@@ -32,7 +32,7 @@ public class EvictionStrategyFactoryTest {
      * @throws CacheException if an error occurs
      */
     @Test
-    public void should_create_the_LRU_strategy_correctly() throws CacheException {
+    void should_create_the_LRU_strategy_correctly() throws CacheException {
         EvictionStrategy<String, String> strategy = EvictionStrategyFactory.create(cache, 10, CacheEvictionType.LRU);
         assertThat(strategy.getClass(), is(equalTo(LRUEvictionStrategy.class)));
     }
@@ -42,7 +42,7 @@ public class EvictionStrategyFactoryTest {
      * @throws CacheException if an error occurs
      */
     @Test
-    public void should_create_the_LFU_strategy_correctly() throws CacheException {
+    void should_create_the_LFU_strategy_correctly() throws CacheException {
         EvictionStrategy<String, String> strategy = EvictionStrategyFactory.create(cache, 10, CacheEvictionType.LFU);
         assertThat(strategy.getClass(), is(equalTo(LFUEvictionStrategy.class)));
     }
@@ -51,7 +51,7 @@ public class EvictionStrategyFactoryTest {
      * Test to verify that cache exception is thrown if the type is passe as null.
      */
     @Test
-    public void should_throw_exception_when_eviction_type_is_null() {
+    void should_throw_exception_when_eviction_type_is_null() {
         assertThrows(CacheException.class, () -> EvictionStrategyFactory.create(cache, 10, null));
     }
 }

@@ -14,14 +14,14 @@ import static org.hamcrest.core.Is.is;
 /**
  * Class to test cache builder.
  */
-public class CacheBuilderTest {
+class CacheBuilderTest {
     /**
      * Test to verify that only an in-memory cache is built when eviction is not set.
      *
      * @throws CacheBuilderException if an error occurs when building the cache
      */
     @Test
-    public void should_build_an_in_memory_cache_only_if_eviction_is_not_set() throws CacheBuilderException {
+    void should_build_an_in_memory_cache_only_if_eviction_is_not_set() throws CacheBuilderException {
         CacheBuilder cacheBuilder = new CacheBuilder();
         Cache<String, String> cache = cacheBuilder.buildInMemoryCache();
         assertThat(cache.getClass(), is(equalTo(InMemoryCache.class)));
@@ -33,7 +33,7 @@ public class CacheBuilderTest {
      * @throws CacheBuilderException if an error occurs when building the cache
      */
     @Test
-    public void should_build_an_evictable_in_memory_cache_if_eviction_is_set() throws CacheBuilderException {
+    void should_build_an_evictable_in_memory_cache_if_eviction_is_set() throws CacheBuilderException {
         CacheBuilder cacheBuilder = new CacheBuilder();
         Cache<String, String> cache = cacheBuilder.setEviction(10, CacheEvictionType.LRU).buildInMemoryCache();
         assertThat(cache.getClass(), is(equalTo(EvictableCache.class)));
@@ -45,7 +45,7 @@ public class CacheBuilderTest {
      * @throws CacheBuilderException if an error occurs when building the cache
      */
     @Test
-    public void should_build_a_file_system_cache_only_if_eviction_is_not_set(@TempDir Path tempDirPath) throws CacheBuilderException {
+    void should_build_a_file_system_cache_only_if_eviction_is_not_set(@TempDir Path tempDirPath) throws CacheBuilderException {
         CacheBuilder cacheBuilder = new CacheBuilder();
         Cache<String, String> cache = cacheBuilder.buildFileSystemCache(tempDirPath.toString());
         assertThat(cache.getClass(), is(equalTo(FileSystemCache.class)));
@@ -57,7 +57,7 @@ public class CacheBuilderTest {
      * @throws CacheBuilderException if an error occurs when building the cache
      */
     @Test
-    public void should_build_an_evictable_in_memory_cache_if_eviction_is_set(@TempDir Path tempDirPath) throws CacheBuilderException {
+    void should_build_an_evictable_in_memory_cache_if_eviction_is_set(@TempDir Path tempDirPath) throws CacheBuilderException {
         CacheBuilder cacheBuilder = new CacheBuilder();
         Cache<String, String> cache = cacheBuilder.setEviction(10, CacheEvictionType.LRU).buildFileSystemCache(tempDirPath.toString());
         assertThat(cache.getClass(), is(equalTo(EvictableCache.class)));
@@ -69,7 +69,7 @@ public class CacheBuilderTest {
      * @throws CacheBuilderException if an error occurs when building the cache
      */
     @Test
-    public void should_build_a_two_level_cache_correctly() throws CacheBuilderException {
+    void should_build_a_two_level_cache_correctly() throws CacheBuilderException {
         CacheBuilder cacheBuilder = new CacheBuilder();
         Cache<String, String> cache = cacheBuilder.twoLevelCache()
                 .setLevel1CacheEviction(5, CacheEvictionType.LRU)
@@ -84,7 +84,7 @@ public class CacheBuilderTest {
      * @throws CacheBuilderException if an error occurs when building the cache
      */
     @Test
-    public void should_build_a_two_level_cache_correctly_when_folder_path_is_set(@TempDir Path tempDirPath) throws CacheBuilderException {
+    void should_build_a_two_level_cache_correctly_when_folder_path_is_set(@TempDir Path tempDirPath) throws CacheBuilderException {
         CacheBuilder cacheBuilder = new CacheBuilder();
         Cache<String, String> cache = cacheBuilder.twoLevelCache()
                 .setLevel1CacheEviction(5, CacheEvictionType.LRU)

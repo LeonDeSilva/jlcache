@@ -15,7 +15,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * Class to test FileSystemCache.
  */
-public class FileSystemCacheTest {
+class FileSystemCacheTest {
     private FileSystemCache<String, String> cache;
     private static final String KEY1 = "Key1";
     private static final String KEY2 = "Key2";
@@ -29,7 +29,7 @@ public class FileSystemCacheTest {
      *
      */
     @BeforeEach
-    public void setup(@TempDir Path temporaryDirectoryPath) throws CacheException {
+    void setup(@TempDir Path temporaryDirectoryPath) throws CacheException {
         cache = new FileSystemCache<>(temporaryDirectoryPath.toString());
     }
 
@@ -37,7 +37,7 @@ public class FileSystemCacheTest {
      * Test verify whether the data insertion and retrievals are done correctly.
      */
     @Test
-    public void should_insert_and_get_data_correctly() throws CacheException {
+    void should_insert_and_get_data_correctly() throws CacheException {
         cache.put(KEY1, VALUE1);
         cache.put(KEY2, VALUE2);
         cache.put(KEY3, VALUE3);
@@ -51,7 +51,7 @@ public class FileSystemCacheTest {
      * Test verify whether the cache entry size is returned correctly.
      */
     @Test
-    public void should_return_the_cache_size_correctly() throws CacheException {
+    void should_return_the_cache_size_correctly() throws CacheException {
         cache.put(KEY1, VALUE1);
         cache.put(KEY2, VALUE2);
         assertThat(cache.getSize(), is(equalTo(2)));
@@ -61,7 +61,7 @@ public class FileSystemCacheTest {
      * Test verify whether true is returned when the cache contains the key.
      */
     @Test
-    public void should_return_the_true_if_the_cache_contains_key() throws CacheException {
+    void should_return_the_true_if_the_cache_contains_key() throws CacheException {
         cache.put(KEY1, VALUE1);
         assertThat(cache.containsKey(KEY1), is(equalTo(true)));
     }
@@ -70,7 +70,7 @@ public class FileSystemCacheTest {
      * Test verify whether false is returned when the cache does not contain the key.
      */
     @Test
-    public void should_return_the_false_if_the_cache_does_not_contain_the_key() throws CacheException {
+    void should_return_the_false_if_the_cache_does_not_contain_the_key() throws CacheException {
         cache.put(KEY1, VALUE1);
         assertThat(cache.containsKey(KEY2), is(equalTo(false)));
     }
@@ -79,7 +79,7 @@ public class FileSystemCacheTest {
      * Test verify whether entries are deleted correctly from cache.
      */
     @Test
-    public void should_delete_an_entry_correctly() throws CacheException {
+    void should_delete_an_entry_correctly() throws CacheException {
         cache.put(KEY1, VALUE1);
         cache.put(KEY2, VALUE2);
         assertThat(cache.containsKey(KEY2), is(equalTo(true)));
@@ -92,7 +92,7 @@ public class FileSystemCacheTest {
      * Test verify whether all entries are deleted correctly from cache.
      */
     @Test
-    public void should_delete_all_entries_correctly() throws CacheException {
+    void should_delete_all_entries_correctly() throws CacheException {
         cache.put(KEY1, VALUE1);
         cache.put(KEY2, VALUE2);
         cache.put(KEY3, VALUE3);
@@ -106,7 +106,7 @@ public class FileSystemCacheTest {
      * Test verify whether meta data store and retrieval is done correctly.
      */
     @Test
-    public void should_store_and_get_meta_data_correctly() throws CacheException {
+    void should_store_and_get_meta_data_correctly() throws CacheException {
         LRUEvictionMetaData<String> metaData = new LRUEvictionMetaData<>();
         cache.storeMetaData(metaData);
         assertThat(cache.getMetaData(), is(equalTo(metaData)));
