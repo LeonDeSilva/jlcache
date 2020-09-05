@@ -5,7 +5,8 @@ import com.leondesilva.cache.inmemory.exceptions.SerializationException;
 import com.leondesilva.cache.inmemory.pojo.MetaData;
 import com.leondesilva.cache.inmemory.util.SerializationUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -31,9 +32,19 @@ public class FileSystemCache<K extends Serializable, V extends Serializable> imp
         this.folderPath = folderPath;
 
         try {
-            Files.createDirectories(Paths.get(folderPath));
-            Files.createFile(Paths.get(folderPath, CACHE_FILE_NAME));
-            Files.createFile(Paths.get(folderPath, CACHE_FILE_NAME));
+            if (!Paths.get(folderPath).toFile().exists()) {
+                Files.createDirectories(Paths.get(folderPath));
+            }
+
+            if (!Paths.get(folderPath, CACHE_FILE_NAME).toFile().exists()) {
+                Files.createFile(Paths.get(folderPath, CACHE_FILE_NAME));
+            }
+
+            if (!Paths.get(folderPath, META_INFO_FILE_NAME).toFile().exists()) {
+                Files.createFile(Paths.get(folderPath, META_INFO_FILE_NAME));
+            }
+
+            writeCacheFile(new HashMap<>());
         } catch (IOException e) {
             throw new CacheException("Error occurred when trying to initialize file system cache.", e);
         }
@@ -78,6 +89,7 @@ public class FileSystemCache<K extends Serializable, V extends Serializable> imp
 
     /**
      * Method to delete all the keys and values
+     *
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
     public void deleteAll() throws CacheException {
@@ -125,7 +137,7 @@ public class FileSystemCache<K extends Serializable, V extends Serializable> imp
      * @return the meta data
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
-    public MetaData getMetaData() throws CacheException{
+    public MetaData getMetaData() throws CacheException {
         return readMetaFile();
     }
 

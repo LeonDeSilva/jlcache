@@ -24,7 +24,7 @@ public class EvictableCache<K extends Serializable, V extends Serializable> impl
      * @param cache             the cache to be used with the eviction strategy
      * @param maxEntrySize      the max entry size
      * @param cacheEvictionType the cache eviction type
-     * @throws CacheException   if the eviction type is invalid or if the cache initialization fails
+     * @throws CacheException if the eviction type is invalid or if the cache initialization fails
      */
     public EvictableCache(Cache<K, V> cache, int maxEntrySize, CacheEvictionType cacheEvictionType) throws CacheException {
         this.cacheEvictionStrategy = EvictionStrategyFactory.create(cache, maxEntrySize, cacheEvictionType);

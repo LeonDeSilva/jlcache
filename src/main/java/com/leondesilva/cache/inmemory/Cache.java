@@ -41,6 +41,7 @@ public interface Cache<K extends Serializable, V extends Serializable> {
 
     /**
      * Method to delete all the keys and values
+     *
      * @throws CacheException if an error occurs when trying to run a caching related task
      */
     void deleteAll() throws CacheException;

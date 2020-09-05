@@ -42,17 +42,17 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
     public void put(K key, V value) throws CacheException {
         LRUEvictionMetaData<K> metaData = retrieveMetaData();
         LinkedList<K> nodeList = metaData.getNodeList();
-        if (nodeList.size() == maxEntrySize) {
-            K lastKey = nodeList.removeLast();
-            cache.delete(lastKey);
-        }
-
-        cache.put(key, value);
 
         if (cache.containsKey(key)) {
             nodeList.remove(key);
+        } else {
+            if (nodeList.size() == maxEntrySize) {
+                K lastKey = nodeList.removeLast();
+                cache.delete(lastKey);
+            }
         }
 
+        cache.put(key, value);
         nodeList.add(0, key);
         storeMetaData(metaData);
     }
@@ -90,7 +90,6 @@ public class LRUEvictionStrategy<K extends Serializable, V extends Serializable>
 
     /**
      * Method to delete all the keys.
-     *
      */
     @Override
     public void deleteAll() throws CacheException {
